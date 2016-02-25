@@ -1,1 +1,4 @@
 # RPS
+#codingrules
+#thisshitbedope
+#turtcodingisgod
