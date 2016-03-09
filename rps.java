@@ -17,6 +17,19 @@ public class rps
     public static int first=1;
     public static String name=null;
     public static int begin=0;
+    public static int pfirst = 0;
+    public static int psecond = 0;
+    public static int pthird = 0;
+    public static int pfourth = 0;
+    public static int pfifth = 0;
+    public static int psixth = 0;
+    public static int playerrocks =0;
+    public static int playerpapers = 0;
+    public static int playerscissors = 0;
+    public static int plan=0;
+    public static int random=0;
+    public static int next=0;
+    public static int losenumber=0;
     public static void main(String[] args){
         welcome();
         run();
@@ -43,7 +56,9 @@ public class rps
             first =0;
         }
         playerChoice();
-        cpu();
+        AI();
+        cpuChoice();
+        record();
         score();
         check();
 
@@ -51,7 +66,7 @@ public class rps
 
     public static void playerChoice(){
         boolean choosing=true; // keeps the while loop going, if its false it stops
-        
+
         //System.out.print("\f");
         //try{Thread.sleep(1000);}catch(Exception exc){}
         while (choosing==true)
@@ -92,8 +107,8 @@ public class rps
     }
 
     public static void cpu(){
-        int random=random(1,3);
-        cChoice=random;
+        random=random(1,3);
+
         if (random == 1){
             System.out.println("Andrew chose rock.");
 
@@ -119,8 +134,8 @@ public class rps
         if(choice == 3 && cChoice== 1){option = 2;}
         if(choice == 3 && cChoice== 2){option = 1;}
         switch(option){
-            case 1: System.out.println("you win!"); pscore=pscore+1; System.out.print("the score is "+name +pscore); System.out.println("  Andrew:"+cpuscore); check(); break;
-            case 2: System.out.println("you lost :("); cpuscore= cpuscore+1; System.out.print("the score is "+name +pscore); System.out.println("  Andrew:"+cpuscore); check();  break;
+            case 1: System.out.println("you win!");losenumber=0; pscore=pscore+1; System.out.print("the score is "+name +pscore); System.out.println("  Andrew:"+cpuscore); check(); break;
+            case 2: System.out.println("you lost :(");losenumber=losenumber+1; cpuscore= cpuscore+1; System.out.print("the score is "+name +pscore); System.out.println("  Andrew:"+cpuscore); check();  break;
             case 3: System.out.println("its a tie"); System.out.print("the score is "+name +pscore); System.out.println("  Andrew:"+cpuscore); check();  break;
         }
     }
@@ -128,15 +143,15 @@ public class rps
     public static void check(){
 
         round = round+1;
-        if(pscore == 5){
+        if(pscore == 50){ //temp changed to 50 for testing
             System.out.print("\f");
             System.out.print("FUCK YEAH "+name); System.out.print(" YOU KICKED HIS ASS!!");
         }
-        else if (cpuscore == 5){
+        else if (cpuscore == 50){
             System.out.print("\f");
             System.out.print(name+ ",you have dishonored family...you end life now");
         }
-        else if(pscore < 5 || cpuscore < 5){
+        else if(pscore < 50 || cpuscore < 50){
 
             clear();
 
@@ -151,6 +166,10 @@ public class rps
             if(go == 'q'){
                 loop=0;
             }
+            if (go == 'm'){
+                cpuscore=50;
+                check();
+            }
         }
 
         //try{Thread.sleep(100);}catch(Exception exc){}
@@ -160,5 +179,70 @@ public class rps
 
     public static int random(int min,int max){
         return (int)Math.floor(max*Math.random())+min;
+    }
+
+    public static void AI(){
+        plan=1;
+        boolean brainblast=true;
+        while (brainblast==true){
+            switch (plan){
+                case 1:   
+
+                if(pfirst == 1 && psecond==2){next=1;}
+                else if(pfirst == 2 && psecond==3){next=2;brainblast=false;}
+                else if(pfirst == 3 && psecond==1){next=3;brainblast=false;}
+                else if(pfirst == 3 && psecond==2){next=2;brainblast=false;}
+                else if(pfirst == 2 && psecond==1){next=1;brainblast=false;}
+                else if(pfirst == 1 && psecond==3){next=3;brainblast=false;} 
+                else{ plan++; } break;
+                case 2: 
+                if(playerrocks > playerscissors+5){if(playerrocks> playerpapers+5){if (pfirst!=1 && psecond!=1){{next=2;brainblast=false;}}}}
+                        else if(playerpapers> playerrocks+5){if(playerpapers>playerscissors+5){if (pfirst!=2 && psecond!=2){{next=3;brainblast=false;}}}}
+                        else if(playerscissors> playerrocks+5){if(playerscissors>playerpapers+5){if (pfirst!=3 && psecond!=3){{next=1;brainblast=false;}}}}
+                        else{plan++;} break;
+                case 3: if(losenumber>5){random=random(1,3); next=random;brainblast=false;}else{plan++;} break;
+                case 4:if(playerrocks > playerscissors+3){if(playerrocks> playerpapers+3){next=2;brainblast=false;}}
+                        else if(playerpapers> playerrocks+3){if(playerpapers>playerscissors+3){next=3;brainblast=false;}}
+                        else if(playerscissors> playerrocks+3){if(playerscissors>playerpapers+3){next=1;brainblast=false;}}
+                        else{plan++;}break; 
+                case 5:random=random(1,3); next=random;brainblast=false;     break;
+            }
+        }
+    }
+
+    public static void cpuChoice(){
+        cChoice=next;
+        if(next==0){next=3;}
+        if(next==4){next=1;}
+        if (cChoice == 1){
+            System.out.println("Andrew chose rock.");
+
+        } else if (cChoice == 2){
+            System.out.println("Andrew chose paper.");
+
+        } else if (cChoice == 3){
+            System.out.println("Andrew chose scissors.");
+
+        } 
+
+    }
+
+    public static void record(){
+        if (choice == 1){
+            playerrocks++;   
+        }
+        if (choice == 2){
+            playerpapers++;   
+        }
+        if (choice == 3){
+            playerscissors++;   
+        }
+        psixth= pfifth;
+        pfifth = pfourth;
+        pfourth = pthird;
+        pthird = psecond;
+        psecond = pfirst; 
+        pfirst = choice;
+
     }
 }
